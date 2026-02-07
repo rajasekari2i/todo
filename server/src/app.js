@@ -13,15 +13,32 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// Handle CORS preflight BEFORE anything else
+app.options('*', (req, res) => {
+  res.set({
+    'Access-Control-Allow-Origin': req.headers.origin || '*',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Max-Age': '86400'
+  });
+  res.status(204).end();
+});
+
+// CORS for all requests
+app.use((req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': req.headers.origin || '*',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+    'Access-Control-Allow-Credentials': 'true'
+  });
+  next();
+});
+
 // Middleware
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
-}));
-app.use(cors({
-  origin: true,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(morgan('dev'));
 app.use(express.json());
