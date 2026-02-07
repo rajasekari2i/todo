@@ -1,3 +1,6 @@
+// Explicit require so Vercel's ncc bundler includes pg in the build
+require('pg');
+
 let app;
 let sequelize;
 let isDbSynced = false;
