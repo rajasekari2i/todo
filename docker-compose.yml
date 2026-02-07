@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -24,11 +24,11 @@ services:
       dockerfile: Dockerfile
     container_name: todo_server
     environment:
-      DB_HOST: db
+      DB_HOST: ep-winter-meadow-a12ef6li-pooler.ap-southeast-1.aws.neon.tech
       DB_PORT: 5432
-      DB_NAME: todo_app
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_NAME: neondb
+      DB_USER: neondb_owner
+      DB_PASSWORD: npg_6tDUHNuXqo1E
       JWT_SECRET: your_jwt_secret_change_in_production
       JWT_EXPIRES_IN: 7d
       SERVER_PORT: 3001

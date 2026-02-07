@@ -1,22 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
 const http = require('http');
 const { Server } = require('socket.io');
 
+const app = require('./app');
 const { sequelize } = require('./models');
-const authRoutes = require('./routes/auth');
-const todoRoutes = require('./routes/todos');
-const categoryRoutes = require('./routes/categories');
-const tagRoutes = require('./routes/tags');
-const notificationRoutes = require('./routes/notifications');
-const errorHandler = require('./middleware/errorHandler');
 const { initializeSocket } = require('./services/socketService');
 const { startReminderJob } = require('./services/reminderService');
 
-const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -25,29 +14,8 @@ const io = new Server(server, {
   }
 });
 
-// Middleware
-app.use(helmet());
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-
 // Make io accessible in routes
 app.set('io', io);
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/todos', todoRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/tags', tagRoutes);
-app.use('/api/notifications', notificationRoutes);
-
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// Error handling
-app.use(errorHandler);
 
 // Initialize Socket.io
 initializeSocket(io);

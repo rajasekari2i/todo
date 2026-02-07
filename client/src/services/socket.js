@@ -6,9 +6,13 @@ export const connectSocket = () => {
   const token = localStorage.getItem('token')
   if (!token || socket?.connected) return
 
-  const serverUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001'
+  const serverUrl = import.meta.env.VITE_SOCKET_URL
+  if (!serverUrl && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+    // No socket URL configured and not running locally — skip socket connection (e.g. Vercel)
+    return
+  }
 
-  socket = io(serverUrl, {
+  socket = io(serverUrl || 'http://localhost:3001', {
     auth: { token }
   })
 
