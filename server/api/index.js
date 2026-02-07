@@ -1,10 +1,15 @@
-const app = require('../src/app');
-const { sequelize } = require('../src/models');
-
+let app;
+let sequelize;
 let isDbSynced = false;
 
 module.exports = async (req, res) => {
   try {
+    if (!app) {
+      app = require('../src/app');
+    }
+    if (!sequelize) {
+      sequelize = require('../src/models').sequelize;
+    }
     if (!isDbSynced) {
       await sequelize.sync();
       isDbSynced = true;
@@ -15,6 +20,7 @@ module.exports = async (req, res) => {
     res.status(500).json({
       error: 'Internal server error',
       message: error.message,
+      stack: error.stack,
       env_check: {
         NODE_ENV: process.env.NODE_ENV || 'NOT SET',
         DB_HOST: process.env.DB_HOST ? 'SET' : 'NOT SET',
