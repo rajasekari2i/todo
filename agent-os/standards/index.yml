@@ -1,0 +1,33 @@
+# Agent OS Standards Index
+
+api:
+  authentication:
+    description: JWT Bearer auth, req.user/req.userId, token format
+  controller-pattern:
+    description: Try-catch, user-scoped queries, response format convention
+  validation-and-errors:
+    description: Joi validation middleware, error response contract, status codes
+
+backend:
+  services-pattern:
+    description: IO passing, error isolation, singleton state, cron jobs
+
+database:
+  associations:
+    description: hasMany/belongsTo pairs, alias conventions, include patterns
+  model-pattern:
+    description: Factory function models, snake_case columns, hooks, timestamps
+
+react:
+  auth-state:
+    description: AuthContext + localStorage, Axios interceptor, protected routes
+  component-patterns:
+    description: Functional components, controlled forms, Tailwind/HeadlessUI/Heroicons
+  data-fetching:
+    description: React Query hooks per resource, mutation patterns, cache invalidation
+
+testing:
+  e2e-patterns:
+    description: Playwright serial tests, auth fixture, Date.now() test data
+  unit-testing:
+    description: Vitest for client, Jest for server, React Testing Library
